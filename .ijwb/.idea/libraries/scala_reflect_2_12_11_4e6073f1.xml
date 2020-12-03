@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="scala-reflect-2.12.11_4e6073f1">
+    <CLASSES>
+      <root url="jar:///private/var/tmp/_bazel_samuelmishra/04cce2cece7500a46d7a8f3ca0a8e775/execroot/__main__/external/io_bazel_rules_scala_scala_reflect/scala-reflect-2.12.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
