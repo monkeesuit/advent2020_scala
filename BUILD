@@ -23,3 +23,11 @@ scala_binary(
         ],
     main_class = "sam.Advent2020.Dec2.Password2"
 )
+
+scala_binary(
+    name = "ToboganApp",
+        deps = [
+            "//Dec3:Tobogan"
+        ],
+    main_class = "sam.Advent2020.Dec3.Tobogan"
+)
