@@ -8,8 +8,10 @@ object Password1 {
     val regex = """^(\d+)-(\d+)\s([a-zA-Z]):\s([a-zA-Z]*)$""".r
     data.map { i =>
       i match {
-        case regex(lb, ub, l, p)  => if (p.count(_ == l(0)) >= lb.toInt & p.count(_ == l(0)) <= ub.toInt) 1 else 0
-        case _                    => 0
+        case regex(lb, ub, l, p) =>
+          if (p.count(_ == l(0)) >= lb.toInt & p.count(_ == l(0)) <= ub.toInt) 1
+          else 0
+        case _ => 0
       }
     }.sum
   }

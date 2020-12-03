@@ -5,13 +5,15 @@ import scala.io.Source
 object Tobogan {
 
   def predicate(s: String, x: Int): List[Int] = {
-    if( s.toList(x % s.length) == '#' ) List(1) else List(0)
+    if (s.toList(x % s.length) == '#') List(1) else List(0)
   }
 
   def helper(data: List[String], x: Int, xp: Int, yp: Int): List[Int] = {
     data match {
       case n if (n.size <= yp) => { predicate(n.head.trim, x) }
-      case n::ns               => { predicate(n.trim, x) ++ helper(ns.drop(yp-1), x+xp, xp, yp)}
+      case n :: ns => {
+        predicate(n.trim, x) ++ helper(ns.drop(yp - 1), x + xp, xp, yp)
+      }
     }
   }
 
@@ -26,12 +28,14 @@ object Tobogan {
 
     println(handle(data, 3, 1))
 
-    println((
-      BigDecimal(handle(data, 1, 1))
-        * BigDecimal(handle(data, 3, 1))
-        * BigDecimal(handle(data, 5, 1))
-        * BigDecimal(handle(data, 7, 1))
-        * BigDecimal(handle(data, 1, 2))
-    ))
+    println(
+      (
+        BigDecimal(handle(data, 1, 1))
+          * BigDecimal(handle(data, 3, 1))
+          * BigDecimal(handle(data, 5, 1))
+          * BigDecimal(handle(data, 7, 1))
+          * BigDecimal(handle(data, 1, 2))
+      )
+    )
   }
 }

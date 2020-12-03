@@ -5,8 +5,10 @@ import scala.io.Source
 object TwentyTwenty {
 
   def handle(data: List[Int], size: Int, sum: Int): Int = {
-    val ri = data.toSet.subsets.filter{ p => p.size == size & p.sum == sum }
-    ri.next.toList.reduce( (x,y) => x * y)
+    val ri = data.toSet.subsets.filter { p =>
+      p.size == size & p.sum == sum
+    }
+    ri.next.toList.reduce((x, y) => x * y)
   }
 
   def main(args: Array[String]): Unit = {

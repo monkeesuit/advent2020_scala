@@ -4,7 +4,6 @@ import scala.io.Source
 
 object Password2 {
 
-
   def isValid(password: String, index: Int, letter: Char): Boolean = {
     try {
       (password(index - 1) == letter)
@@ -13,17 +12,16 @@ object Password2 {
     }
   }
 
-
   def handle(data: List[String]): Int = {
     val regex = """^(\d+)-(\d+)\s([a-zA-Z]):\s([a-zA-Z]*)$""".r
     data.map { i =>
       i match {
-        case regex(i1, i2, l, p)  => if ( isValid(p, i1.toInt, l(0)) ^ isValid(p, i2.toInt, l(0)) ) 1 else 0
-        case _                    => 0
+        case regex(i1, i2, l, p) =>
+          if (isValid(p, i1.toInt, l(0)) ^ isValid(p, i2.toInt, l(0))) 1 else 0
+        case _ => 0
       }
     }.sum
   }
-
 
   def main(args: Array[String]): Unit = {
 
