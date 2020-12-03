@@ -5,7 +5,7 @@ import scala.io.Source
 object Tobogan {
 
   def predicate(s: String, x: Int): List[Int] = {
-    if( s.toList.zipWithIndex.filter{ case (c, _) => c == '#' }.map(_._2).contains((x % s.length)) ) List(1) else List(0)
+    if( s.toList(x % s.length) == '#' ) List(1) else List(0)
   }
 
   def helper(data: List[String], x: Int, xp: Int, yp: Int): List[Int] = {
@@ -15,8 +15,8 @@ object Tobogan {
     }
   }
 
-  def handle(data: List[String], x: Int, xp: Int, yp: Int): Int = {
-    helper(data, x, xp, yp).sum
+  def handle(data: List[String], xp: Int, yp: Int): Int = {
+    helper(data, 0, xp, yp).sum
   }
 
   def main(args: Array[String]): Unit = {
@@ -24,14 +24,14 @@ object Tobogan {
     val data = f.getLines.toList
     f.close
 
-    println(handle(data, 0, 3, 1))
+    println(handle(data, 3, 1))
 
     println((
-      BigDecimal(handle(data, 0, 1, 1))
-        * BigDecimal(handle(data, 0, 3, 1))
-        * BigDecimal(handle(data, 0, 5, 1))
-        * BigDecimal(handle(data, 0, 7, 1))
-        * BigDecimal(handle(data, 0, 1, 2))
+      BigDecimal(handle(data, 1, 1))
+        * BigDecimal(handle(data, 3, 1))
+        * BigDecimal(handle(data, 5, 1))
+        * BigDecimal(handle(data, 7, 1))
+        * BigDecimal(handle(data, 1, 2))
     ))
   }
 }
