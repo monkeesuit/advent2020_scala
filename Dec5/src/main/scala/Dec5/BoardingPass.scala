@@ -33,7 +33,7 @@ object BoardingPass{
 
   }
 
-  
+
   def main(args: Array[String]): Unit = {
 
     val f = Source.fromFile(args(0))
