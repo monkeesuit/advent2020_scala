@@ -17,11 +17,9 @@ object Customs {
   def handle(data: List[String]): (Int, Int) = {
 
     val cleanData = clean(Some(data), None)._2.get.filter{ _ != (0, "") }
-
     val p1 = cleanData.map{ form =>
       form._2.toList.distinct.length
     }.sum
-
     val p2 = cleanData.map{ form =>
       val numChars = form._2.toList.groupBy(identity).mapValues(_.size)
       numChars.filter{_._2 == form._1}.size

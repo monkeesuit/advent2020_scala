@@ -55,3 +55,11 @@ scala_binary(
         ],
     main_class = "sam.Advent2020.Dec6.Customs"
 )
+
+scala_binary(
+    name = "BackpackApp",
+        deps = [
+            "//Dec7:Backpack"
+        ],
+    main_class = "sam.Advent2020.Dec7.Backpack"
+)
