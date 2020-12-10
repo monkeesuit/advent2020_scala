@@ -9,72 +9,47 @@ object Adapter {
   def handle(data: List[String]): (Int, Long) = {
 
     val cleanData = List(0.toLong) ++ data.map{_.toLong}.sorted
-    var memo = Map[Int, Long]()
+    var cache = scala.collection.mutable.Map.empty[Int, Long]
 
-    def tryWalk(pointer: Int, accum: Option[List[Int]]): Option[List[Int]] = {
-      if (pointer == (cleanData.size - 1)) return Some(accum.get.patch(2 , List(accum.get(2) + 1), 1))
+
+    def walk(pointer: Int, accum: List[Int]): List[Int] = {
       val value = cleanData(pointer)
-      val jump =  {
-        if (cleanData.contains(value + 1)) Some(1)
-        else if (cleanData.contains(value + 2)) Some(2)
-        else if (cleanData.contains(value + 3)) Some(3)
-        else None
+
+      def step(i: Int): (Int, List[Int])  = {
+        val newPointer = cleanData.indexOf((value.toLong + i.toLong))
+        val newAccum = accum.patch((i-1) , List(accum(i-1) + 1), 1)
+        (newPointer, newAccum)
       }
-      jump match {
-        case None => None
-        case Some(i: Int) => {
-          val new_pointer = cleanData.indexOf((value.toLong + i.toLong))
-          val current_accum = accum.getOrElse(List(0,0,0))
-          val new_accum = current_accum.patch((i-1) , List(current_accum(i-1) + 1), 1)
-          tryWalk(new_pointer, Some(new_accum))
-        }
+
+      pointer match {
+        case a if (a == (cleanData.size - 1)) => accum.patch(2, List(accum(2) + 1), 1)
+        case b if (cleanData.contains(value + 1)) => walk(step(1)._1, step(1)._2)
+        case c if (cleanData.contains(value + 2)) => walk(step(2)._1, step(2)._2)
+        case d if (cleanData.contains(value + 3)) => walk(step(3)._1, step(3)._2)
       }
     }
+
 
     def countPaths(pointer: Int): Long = {
 
-      memo.getOrElse(pointer, None) match{
-        case None => ()
-        case _ => return memo(pointer)
-      }
-      if (pointer > cleanData.size - 1) {
-        memo(pointer) = 0.toLong
-        return memo(pointer)
-      }
-      if (pointer == cleanData.size - 1) {
-        memo(pointer) = 1.toLong
-        return memo(pointer)
-      }
-      def validNeighnors(step: Int): Boolean = {
+      def validNeighnors(pointer: Int, step: Int): Boolean = {
         (pointer < cleanData.size - step) && (cleanData(pointer + step) - cleanData(pointer) <= 3)
       }
-      val oneStep = if (validNeighnors(1)) {
-        countPaths(pointer + 1)
-      } else {
-        0.toLong
+
+      def next(pointer: Int) : Long = {
+        pointer match {
+          case a if (a > cleanData.size - 1) => 0.toLong
+          case b if (b == cleanData.size - 1) => 1.toLong
+          case _ => (1 to 3).filter { i => validNeighnors(pointer, i) }.map { i => countPaths(pointer + i) }.sum
+        }
       }
-      val twoStep = if (validNeighnors(2)) {
-        countPaths(pointer + 2)
-      } else {
-        0.toLong
-      }
-      val threeStep = if (validNeighnors(3)) {
-        countPaths(pointer + 3)
-      } else {
-        0.toLong
-      }
-      memo(pointer) = (oneStep.toLong + twoStep.toLong + threeStep.toLong)
-      return memo(pointer)
+
+      cache.getOrElseUpdate(pointer, next(pointer))
     }
 
-    val p1 = tryWalk(0, None) match {
-      case None => None
-      case Some(l: List[Int]) => Some(l(0) * l(2))
-    }
-
+    val p1 = walk(0, List(0,0,0))
     val p2 = countPaths(0)
-
-    (p1.get, p2)
+    (p1(0) * p1(2), p2)
 
   }
 
