@@ -8,7 +8,7 @@ object Xmas {
   def handle(data: List[String], preambleSize: Int): (Long, Long) = {
 
     val cleanData = data.map(_.toLong)
-    
+
     def findSeed(pointer: Int): Option[Long] = {
 
       def isValid(preamble: List[Long], valueToCheck: Long): Boolean = {
@@ -28,13 +28,13 @@ object Xmas {
         }.reduce{_|_}
       }
 
-      if (pointer >= cleanData.size - preambleSize) None
+      if (pointer >= cleanData.size - preambleSize) return None
 
       val preamble = cleanData.slice(pointer, pointer + preambleSize)
       val valueToCheck = cleanData(pointer + preambleSize)
 
       isValid(preamble, valueToCheck) match {
-        case false => Some(valueToCheck)
+        case false => return Some(valueToCheck)
         case true => findSeed(pointer + 1)
       }
     }
@@ -45,18 +45,22 @@ object Xmas {
       def checkSeq(index: Int, accum: List[Long]): Option[List[Long]] = {
         val value = cleanData(index)
         if (value + accum.sum < seed) checkSeq((index + 1), accum ++ List(value))
-        else if ((value + accum.sum == seed) && (accum.size >= 2)) Some(accum ++ List(value))
-        else None
+        else if ((value + accum.sum == seed) && (accum.size >= 2)) return Some(accum ++ List(value))
+        else return None
       }
 
       checkSeq(pointer, List(0.toLong)) match {
         case None => findKey((pointer + 1), seed)
-        case Some(v) => v.drop(1).min + v.max
+        case Some(v) => return (v.drop(1).min + v.max)
       }
 
     }
 
-    (findSeed(0).get, findKey(0, findSeed(0).get))
+
+    val seed = findSeed(0).get
+    val key = findKey(0, seed)
+
+    return (seed , key)
 
   }
 
