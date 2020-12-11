@@ -87,3 +87,11 @@ scala_binary(
         ],
     main_class = "sam.Advent2020.Dec10.Adapter"
 )
+
+scala_binary(
+    name = "SeatChartApp",
+        deps = [
+            "//Dec11:SeatChart"
+        ],
+    main_class = "sam.Advent2020.Dec11.SeatChart"
+)
